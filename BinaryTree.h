@@ -16,6 +16,10 @@ class BinaryTree {
             return vector;
         }
 
+        BinaryTree() : rootNode(std::nullopt) {
+
+        }
+
     private:
         std::optional<BinaryNode<Container, NodeData, ContainerArgs...>> rootNode;
 };
