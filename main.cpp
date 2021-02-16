@@ -8,8 +8,12 @@ bool intCheck(int* i) {
     return tf;
 }
 
-bool isIntThree(int i) {
-    return i < 4;
+bool isIntThree(int i, bool isLeaf, std::optional<std::string> containedItem) {
+    if(!isLeaf) {
+        return true;
+    }else {
+        return i == 4;
+    }
 }
 
 int main() {

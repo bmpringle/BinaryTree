@@ -7,8 +7,6 @@
 #include <vector>
 #include <iostream>
 
-static int c = 1;
-
 template<class Container, class NodeData, class... ContainerArgs>
 class BinaryNode {
     public:
@@ -17,24 +15,22 @@ class BinaryNode {
             bool rCreate = rightCreate(&rData);
 
             if(lCreate) {
-                left = std::make_shared<BinaryNode>(leftCreate, rightCreate, lData, rData, args...);
+                left = std::make_shared<BinaryNode>(leftCreate, rightCreate, lData, lData, args...);
             }
 
             if(rCreate) {
-                right = std::make_shared<BinaryNode>(leftCreate, rightCreate, lData, rData, args...);
+                right = std::make_shared<BinaryNode>(leftCreate, rightCreate, rData, rData, args...);
             }
             
 
             if(!lCreate && !rCreate) {
                 containedObject = Container(args...);
-                std::cout << c << ". " << std::endl;
-                ++c;
             }            
         };
 
-        void getLeafOfTree(std::vector<std::optional<Container>*>* result, std::function<bool(NodeData)> eval) {
-            bool leftTraverse = eval(leftData);
-            bool rightTraverse = eval(rightData);
+        void getLeafOfTree(std::vector<std::optional<Container>*>* result, std::function<bool(NodeData, bool, std::optional<Container>)> eval) {
+            bool leftTraverse = eval(leftData, (left == nullptr && right == nullptr), containedObject);
+            bool rightTraverse = eval(rightData, (left == nullptr && right == nullptr), containedObject);
             
             if(left != nullptr && leftTraverse) {
                 left->getLeafOfTree(result, eval);
@@ -43,16 +39,17 @@ class BinaryNode {
                 right->getLeafOfTree(result, eval);
             }
             if(left == nullptr && right == nullptr) {
-                result->push_back(&containedObject);
+                if(leftTraverse || rightTraverse) {
+                    result->push_back(&containedObject);
+                }
             }
         };
 
     private:
+        std::optional<Container> containedObject;  
         std::shared_ptr<BinaryNode> left;
         std::shared_ptr<BinaryNode> right;
         NodeData leftData;
         NodeData rightData;
-        std::optional<Container> containedObject;  
-
 };
 #endif
