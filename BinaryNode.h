@@ -10,7 +10,7 @@
 template<class Container, class NodeData, class... ContainerArgs>
 class BinaryNode {
     public:
-        BinaryNode<Container>(std::function<bool(NodeData*)> leftCreate, std::function<bool(NodeData*)> rightCreate, NodeData lData, NodeData rData, ContainerArgs ... args) : containedObject(std::nullopt), left(nullptr), right(nullptr), leftData(lData), rightData(rData) {
+        BinaryNode(std::function<bool(NodeData*)> leftCreate, std::function<bool(NodeData*)> rightCreate, NodeData lData, NodeData rData, ContainerArgs ... args) : containedObject(std::nullopt), left(nullptr), right(nullptr), leftData(lData), rightData(rData) {
             bool lCreate = leftCreate(&lData);
             bool rCreate = rightCreate(&rData);
 
