@@ -4,7 +4,8 @@
 #include "BinaryNode.h"
 
 template<typename Container, class NodeData, class... ContainerArgs>
-class BinaryTree {
+    requires BinarySerialize<Container>
+class BinaryTree final {
     public:
         BinaryTree(std::function<bool(NodeData*)> leftCreate, std::function<bool(NodeData*)> rightCreate, NodeData lData, NodeData rData, ContainerArgs ... args) : rootNode(std::nullopt){
             rootNode = BinaryNode<Container, NodeData, ContainerArgs...>(leftCreate, rightCreate, lData, rData, args...);
@@ -22,6 +23,24 @@ class BinaryTree {
 
         BinaryTree() : rootNode(std::nullopt) {
 
+        }
+
+        std::string serialize() {
+            if(!rootNode.has_value()) {
+                std::cout << "rootnode is null" << std::endl;
+                abort();
+            }
+            std::string ret = "";
+            rootNode.value().serialize(&ret, 0);
+            return ret;
+        }
+
+        void deserialize(std::string str) {
+            if(!rootNode.has_value()) {
+                std::cout << "rootnode is null" << std::endl;
+                abort();
+            }
+            rootNode.value().deserialize(&str, 0);
         }
 
     private:
