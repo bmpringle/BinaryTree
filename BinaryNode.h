@@ -34,9 +34,9 @@ class BinaryNode final : public BinarySerializable {
             }            
         };
 
-        void getLeafOfTree(std::vector<std::optional<Container>*>* result, std::function<bool(NodeData, bool, std::optional<Container>&)> eval) {
-            bool leftTraverse = eval(leftData, (left == nullptr && right == nullptr), containedObject);
-            bool rightTraverse = eval(rightData, (left == nullptr && right == nullptr), containedObject);
+        void getLeafOfTree(std::vector<std::optional<Container>*>* result, std::function<bool(NodeData, bool, std::optional<Container>*)> eval) {
+            bool leftTraverse = eval(leftData, (left == nullptr && right == nullptr), &containedObject);
+            bool rightTraverse = eval(rightData, (left == nullptr && right == nullptr), &containedObject);
             
             if(left != nullptr && leftTraverse) {
                 left->getLeafOfTree(result, eval);
