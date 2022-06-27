@@ -52,7 +52,7 @@ class BinaryNode final : public BinarySerializable {
         };
 
         void serialize(std::string* data, int depth) {
-            *data = *data + "{";
+            data->append("{");
             if(left != nullptr) {
                 left->serialize(data, depth + 1);
             }
@@ -66,7 +66,7 @@ class BinaryNode final : public BinarySerializable {
                     containedObject.value().serialize(data, depth + 1);
                 }
             }
-            *data = *data + "}";
+            data->append("}");
         }
 
         void deserialize(std::string* data, int depth) {
