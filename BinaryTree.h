@@ -10,6 +10,16 @@ class BinaryTree final {
         BinaryTree(std::function<bool(NodeData*)> leftCreate, std::function<bool(NodeData*)> rightCreate, NodeData lData, NodeData rData, ContainerArgs ... args) : rootNode(std::nullopt){
             rootNode = BinaryNode<Container, NodeData, ContainerArgs...>(leftCreate, rightCreate, lData, rData, args...);
         }
+        
+        std::vector<std::optional<Container>*> getAllLeavesOfTree() {
+            if(!rootNode.has_value()) {
+                std::cout << "rootnode is null" << std::endl;
+                abort();
+            }
+            std::vector<std::optional<Container>*> vector = std::vector<std::optional<Container>*>();
+            rootNode.value().getAllLeavesOfTree(&vector);
+            return vector;
+        }
 
         std::vector<std::optional<Container>*> getLeafOfTree(std::function<bool(NodeData, bool, std::optional<Container>*)> eval) {
             if(!rootNode.has_value()) {

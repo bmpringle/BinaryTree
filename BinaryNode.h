@@ -51,6 +51,18 @@ class BinaryNode final : public BinarySerializable {
             }
         };
 
+        void getAllLeavesOfTree(std::vector<std::optional<Container>*>* result) {
+            if(left != nullptr) {
+                left->getAllLeavesOfTree(result);
+            }
+            if(right != nullptr) {
+                right->getAllLeavesOfTree(result);
+            }
+            if(left == nullptr && right == nullptr) {
+                result->push_back(&containedObject);
+            }
+        }
+
         void serialize(std::string* data, int depth) {
             data->append("{");
             if(left != nullptr) {
